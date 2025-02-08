@@ -4,7 +4,7 @@ const supabase = require("../config/supabase");
 const authenticateUser = require("../middleware/authMiddleware");
 const router = express.Router();
 
-// ✅ Start the Auction (Only if 10 Teams Assigned)
+// Start the Auction (Only if 10 Teams Assigned)
 router.post("/start", async (req, res) => {
     const { data: teams, error } = await supabase
         .from("teams")
@@ -18,7 +18,7 @@ router.post("/start", async (req, res) => {
     res.json({ message: "Auction started!" });
 });
 
-// ✅ Place a Bid (Protected)
+// Place a Bid (Protected)
 router.post("/bid", authenticateUser, async (req, res) => {
     const { player_id, bid_amount } = req.body;
     const team_id = req.user.team_id; // Extract user's team

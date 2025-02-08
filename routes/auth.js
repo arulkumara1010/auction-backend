@@ -6,7 +6,7 @@ const supabase = require("../config/supabase");
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET;
 
-// ✅ Register User
+// Register User
 router.post("/register", async (req, res) => {
     const { name, username, password } = req.body;
 
@@ -23,7 +23,7 @@ router.post("/register", async (req, res) => {
     res.json({ message: "User registered successfully", user: data });
 });
 
-// ✅ Login User
+// Login User
 router.post("/login", async (req, res) => {
     const { username, password } = req.body;
 

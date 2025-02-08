@@ -3,14 +3,14 @@ const supabase = require("../config/supabase");
 const authenticateUser = require("../middleware/authMiddleware");
 const router = express.Router();
 
-// ✅ Get All Teams
+// Get All Teams
 router.get("/", async (req, res) => {
     const { data, error } = await supabase.from("teams").select("*");
     if (error) return res.status(400).json({ error: error.message });
     res.json(data);
 });
 
-// ✅ Assign Team to User (Protected)
+// Assign Team to User (Protected)
 router.post("/select", authenticateUser, async (req, res) => {
     const { team_id } = req.body;
     const user_id = req.user.id; // Extracted from JWT token
