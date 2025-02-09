@@ -1,5 +1,9 @@
 const supabase = require("../config/supabase");
 
+const getAllPlayers = async () => {
+  return await supabase.from("players").select("*");
+};
+
 const getUnsoldPlayers = async () => {
   return await supabase.from("players").select("*").eq("sold", false);
 };
@@ -11,4 +15,4 @@ const updatePlayerSale = async (playerId, team, price) => {
     .eq("id", playerId);
 };
 
-module.exports = { getUnsoldPlayers, updatePlayerSale };
+module.exports = { getAllPlayers, getUnsoldPlayers, updatePlayerSale };

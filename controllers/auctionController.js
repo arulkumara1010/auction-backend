@@ -1,5 +1,5 @@
 const { getUnsoldPlayers, updatePlayerSale } = require("../models/playerModel");
-const { getIO } = require("../socket/socket");
+const { getIO } = require("../socket");
 
 let bidTimer = null;
 let currentBid = { playerId: null, team: null, bidAmount: 0 };
