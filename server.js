@@ -3,11 +3,12 @@ const express = require("express");
 const cors = require("cors");
 const http = require("http");
 const { initSocket } = require("./socket");
+const { setupSocketListeners } = require("./controllers/auctionController");
 
 const app = express();
 const server = http.createServer(app);
 const io = initSocket(server);
-
+setupSocketListeners(io);
 app.use(express.json());
 app.use(cors());
 

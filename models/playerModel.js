@@ -14,5 +14,23 @@ const updatePlayerSale = async (playerId, team, price) => {
     .update({ sold: true, sold_team: team, sold_price: price })
     .eq("id", playerId);
 };
+const getPlayerById = async (player_id) => {
+  const { data: player, error } = await supabase
+    .from("players")
+    .select("*")
+    .eq("id", player_id)
+    .single();
 
-module.exports = { getAllPlayers, getUnsoldPlayers, updatePlayerSale };
+  if (error) {
+    console.error("Error fetching player:", error.message);
+  }
+
+  return { data: player, error };
+};
+
+module.exports = {
+  getAllPlayers,
+  getUnsoldPlayers,
+  updatePlayerSale,
+  getPlayerById,
+};
