@@ -11,11 +11,15 @@ let currentBid = { playerId: null, team: null, bidAmount: 0 };
 const startAuction = async () => {
   const io = getIO();
   io.emit("auction_started");
+  console.log("auction started");
   startNewPlayer(io);
 };
 
 const startNewPlayer = async (io) => {
+  console.time("Fetching unsold players");
   const { data: players, error } = await getUnsoldPlayers();
+  console.timeEnd("Fetching unsold players");
+
   if (error || !players.length) {
     io.emit("auction_ended");
     return;
