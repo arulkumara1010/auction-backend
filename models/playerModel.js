@@ -5,7 +5,7 @@ const getAllPlayers = async () => {
 };
 
 const getUnsoldPlayers = async () => {
-  return await supabase.from("players").select("*").eq("sold", false);
+  return await supabase.from("players").select("*").eq("sold", false).order("playerno");
 };
 
 const updatePlayerSale = async (playerId, team, price) => {

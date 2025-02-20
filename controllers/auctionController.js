@@ -33,17 +33,17 @@ const startNewPlayer = async (io) => {
     };
 
     io.emit("new_player", currentPlayer);
-    resetTimer(io);
+    resetTimer(io, currentPlayer);
 };
 
-const resetTimer = (io) => {
+const resetTimer = (io, player) => {
     clearInterval(bidTimer); // Clear any existing timer
     timeLeft = 30; // Reset the countdown
 
     bidTimer = setInterval(async () => {
         if (timeLeft <= 0) {
             clearInterval(bidTimer);
-            await finalizeBid(io, currentBid.playerId);
+            await finalizeBid(io, player);
         } else {
             io.emit("timer_update", timeLeft--);
         }
@@ -92,7 +92,7 @@ const handleBid = async (io, { player_id, team_id }) => {
     currentBid = { playerId: player_id, team: team_id, bidAmount: newBidAmount };
     console.log(`✅ New highest bid: ₹${newBidAmount}L by Team ${team_id}`);
 
-    resetTimer(io);
+    resetTimer(io, player);
     io.emit("bid_update", { player_id, team_id, bid_amount: newBidAmount });
 };
 const finalizeBid = async (io, player) => {
