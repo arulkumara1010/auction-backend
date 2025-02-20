@@ -20,8 +20,6 @@ const selectTeam = async (req, res) => {
 
   await assignTeamToUser(team_id, user_id);
 
-  startAuction();
-
   res.json({ message: "Team assigned successfully" });
 };
 
