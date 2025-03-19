@@ -38,7 +38,7 @@ const startNewPlayer = async (io) => {
 
 const resetTimer = (io, player) => {
     clearInterval(bidTimer); // Clear any existing timer
-    timeLeft = 30; // Reset the countdown
+    timeLeft = 10; // Reset the countdown
 
     bidTimer = setInterval(async () => {
         if (timeLeft <= 0) {
