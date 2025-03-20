@@ -2,6 +2,8 @@ const {
   getUnsoldPlayers,
   updatePlayerSale,
   getPlayerById,
+  updatePlayerAuctionedStatus,
+  resetAuction,
 } = require("../models/playerModel");
 const { getIO } = require("../socket");
 
@@ -10,6 +12,7 @@ let currentBid = { playerId: null, team: null, bidAmount: 0 };
 
 const startAuction = async () => {
   const io = getIO();
+  resetAuction();
   io.emit("auction_started");
   console.log("auction started");
   startNewPlayer(io);
@@ -97,6 +100,7 @@ const handleBid = async (io, { player_id, team_id }) => {
 };
 const finalizeBid = async (io, player) => {
   if (currentBid.team) {
+    // If the player is sold, update the sale details
     await updatePlayerSale(player.id, currentBid.team, currentBid.bidAmount);
     io.emit("player_sold", {
       playerId: player.id,
@@ -104,14 +108,24 @@ const finalizeBid = async (io, player) => {
       price: currentBid.bidAmount,
     });
   } else {
+    // If the player is unsold, mark them as auctioned in the database
+    const result = await updatePlayerAuctionedStatus(player.id);
+    if (!result.success) {
+      console.error(
+        "❌ Failed to update auctioned status for player:",
+        result.error,
+      );
+    }
+
     io.emit("player_unsold", player.id);
   }
 
+  // Start the next player auction after a delay
   setTimeout(() => startNewPlayer(io), 3000);
 };
 const setupSocketListeners = (io) => {
   let selectedTeams = new Set();
-  const totalTeams = 3;
+  const totalTeams = 1;
   io.on("connection", (socket) => {
     console.log(`⚡ New client connected: ${socket.id}`);
     socket.on("team_selected", (teamId) => {
