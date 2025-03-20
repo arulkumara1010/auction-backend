@@ -125,7 +125,7 @@ const finalizeBid = async (io, player) => {
 };
 const setupSocketListeners = (io) => {
   let selectedTeams = new Set();
-  const totalTeams = 1;
+  const totalTeams = 4;
   io.on("connection", (socket) => {
     console.log(`⚡ New client connected: ${socket.id}`);
     socket.on("team_selected", (teamId) => {
