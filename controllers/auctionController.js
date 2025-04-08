@@ -113,7 +113,7 @@ const finalizeBid = async (io, player) => {
     if (!result.success) {
       console.error(
         "❌ Failed to update auctioned status for player:",
-        result.error,
+        result.error
       );
     }
 
@@ -132,7 +132,7 @@ const setupSocketListeners = (io) => {
       selectedTeams.add(teamId);
       console.log(`Team selected: ${teamId}`);
 
-      if (selectedTeams.size === totalTeams) {
+      if (selectedTeams.size >= totalTeams) {
         io.emit("teams_picked"); // Notify all clients that teams are picked
       }
     });
